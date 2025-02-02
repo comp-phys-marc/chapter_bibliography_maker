@@ -52,14 +52,18 @@ def main(argv):
                 ref_str = line.split('{')[1].split(',')[0]  # strip @inproceedings or @article, etc. and ,
                 found = False
                 for chp_pos in ref_pos:
-                    if chp[chp_pos + 6 : chp_pos + 6 + len(ref_str)] == ref_str:  # if the ref is in the chapter
-                        found = True
-                        print(f'Found ref {ref_str} \n')
-                        while line and line[0] != '}':
-                            pos += 1
-                            line = lines[pos]
-                            ref_info += f"\n{line}"
-                        chapter_bib.append(ref_info)
+                    pos_refs = chp[chp_pos + 6 : chp_pos + chp[chp_pos:].index('}')].split(',')
+                    for pos_ref in pos_refs:
+                        if pos_ref.strip() == ref_str:  # if the ref is in the chapter
+                            found = True
+                            print(f'Found ref {ref_str} \n')
+                            while line and line[0] != '}':
+                                pos += 1
+                                line = lines[pos]
+                                ref_info += f"\n{line}"
+                            chapter_bib.append(ref_info)
+                            break
+                    if found:
                         break
                 if not found:
                     print(f'No match for {ref_str} in {chapter_file} \n')
