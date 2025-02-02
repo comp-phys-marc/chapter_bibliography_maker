@@ -49,7 +49,7 @@ def main(argv):
             line = lines[pos]
             if '@' in line:
                 ref_info = f"\n{line}"
-                ref_str = line.split('{')[1][:-2]  # strip @inproceedings or @article, etc. and ,
+                ref_str = line.split('{')[1].split(',')[0]  # strip @inproceedings or @article, etc. and ,
                 found = False
                 for chp_pos in ref_pos:
                     if chp[chp_pos + 6 : chp_pos + 6 + len(ref_str)] == ref_str:  # if the ref is in the chapter
